@@ -1,8 +1,7 @@
 "use client";
-
+import React, { useEffect, useState, useCallback } from "react";
 import Loader from "@/components/custom ui/Loader";
 import ProductForm from "@/components/products/ProductForm";
-import React, { useEffect, useState } from "react";
 
 const ProductDetails = ({ params }: { params: { productId: string } }) => {
   const [loading, setLoading] = useState(true);
@@ -10,7 +9,7 @@ const ProductDetails = ({ params }: { params: { productId: string } }) => {
     null
   );
 
-  const getProductDetails = async () => {
+  const getProductDetails = useCallback(async () => {
     try {
       const res = await fetch(`/api/products/${params.productId}`, {
         method: "GET",
@@ -21,11 +20,11 @@ const ProductDetails = ({ params }: { params: { productId: string } }) => {
     } catch (err) {
       console.log("[productId_GET]", err);
     }
-  };
+  }, [params.productId]); // Include params.productId as a dependency
 
   useEffect(() => {
     getProductDetails();
-  }, []);
+  }, [getProductDetails]); // Add getProductDetails to the dependency array
 
   return loading ? <Loader /> : <ProductForm initialData={productDetails} />;
 };

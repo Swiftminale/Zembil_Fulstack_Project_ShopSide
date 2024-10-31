@@ -21,7 +21,7 @@ interface MultiSelectProps {
 const MultiSelect: React.FC<MultiSelectProps> = ({
   placeholder,
   collections,
-  value,
+  value = [],
   onChange,
   onRemove,
 }) => {
@@ -69,7 +69,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
 
       <div className="relative mt-2">
         {open && (
-          <CommandGroup className="absolute w-full z-30 top-0 overflow-auto border rounded-md shadow-md">
+          <CommandGroup className="absolute w-full z-10 top-0 overflow-auto border rounded-md shadow-md">
             {selectables.map((collection) => (
               <CommandItem
                 key={collection._id}
@@ -78,7 +78,6 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
                   onChange(collection._id);
                   setInputValue("");
                 }}
-                className="hover:bg-grey-2 cursor-pointer"
               >
                 {collection.title}
               </CommandItem>

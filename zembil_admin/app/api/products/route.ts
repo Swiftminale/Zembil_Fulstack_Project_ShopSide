@@ -1,10 +1,9 @@
-
+import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
 import { connectToDB } from "@/lib/mongoDB";
 import Product from "@/lib/models/Product";
 import Collection from "@/lib/models/Collection";
-import { auth } from "@clerk/nextjs/server";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -71,6 +70,10 @@ export const GET = async (req: NextRequest) => {
   try {
     await connectToDB();
 
+    // Optionally log request headers or method for debugging
+    console.log("Request Method:", req.method);
+    console.log("Request Headers:", req.headers);
+
     const products = await Product.find()
       .sort({ createdAt: "desc" })
       .populate({ path: "collections", model: Collection });
@@ -81,5 +84,6 @@ export const GET = async (req: NextRequest) => {
     return new NextResponse("Internal Error", { status: 500 });
   }
 };
+
 
 export const dynamic = "force-dynamic";

@@ -50,10 +50,12 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
 
   const getCollections = async () => {
     try {
+      setLoading(true);
       const res = await fetch("/api/collections", {
         method: "GET",
       });
       const data = await res.json();
+      console.log("Fetched collections:", data); // Log fetched collections
       setCollections(data);
       setLoading(false);
     } catch (err) {
@@ -280,7 +282,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                       <MultiSelect
                         placeholder="Collections"
                         collections={collections}
-                        value={field.value}
+                        value={field.value} // Ensure this is always an array
                         onChange={(_id) =>
                           field.onChange([...field.value, _id])
                         }
@@ -298,6 +300,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                 )}
               />
             )}
+
             <FormField
               control={form.control}
               name="colors"
